@@ -75,4 +75,4 @@ Le dossier resultats contiendra :
     └── src/
         └── etape_1_diffusion.py
 
-Le dépôt GitHub sera publié après exécution, contrôle des résultats et ajout des figures réellement obtenues.
+Les figures réellement obtenues seront ajoutées après exécution et contrôle des résultats.
