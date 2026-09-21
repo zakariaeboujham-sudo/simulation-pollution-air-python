@@ -1,37 +1,57 @@
 # Simulation numérique de la dispersion d’un polluant atmosphérique
 
-Ce projet construit progressivement un modèle mathématique et un solveur Python pour étudier le transport d’un polluant atmosphérique vers une zone urbaine.
+Ce projet construit progressivement un modèle mathématique et des solveurs Python pour étudier le transport d’un polluant atmosphérique vers une zone urbaine.
 
-Le projet complet ajoutera successivement :
+Il relie analyse numérique, équations aux dérivées partielles, programmation scientifique, modélisation et environnement.
 
-1. la diffusion du polluant sans vent ;
-2. le transport par le vent ;
-3. une zone absorbante représentant une ceinture végétale ;
-4. des capteurs fournissant des mesures bruitées ;
-5. la reconstruction de la source de pollution ;
-6. l’optimisation de la position de la ceinture végétale.
+## Avancement
 
-## Étape 1 — Diffusion bidimensionnelle sans vent
+| Étape | Sujet | État |
+|---|---|---|
+| 1 | Diffusion bidimensionnelle sans vent | Code disponible |
+| 2 | Transport par le vent | Code disponible |
+| 3 | Source continue et zone absorbante | À développer |
+| 4 | Capteurs et mesures bruitées | À développer |
+| 5 | Reconstruction de la source | À développer |
+| 6 | Optimisation environnementale | À développer |
 
-La première étape résout l’équation
+Les codes des étapes 1 et 2 doivent encore être exécutés dans un environnement Python avant de publier des résultats numériques comme résultats obtenus.
 
-    ∂c/∂t = D Δc
+## Étape 1 — Diffusion sans vent
 
-sur un domaine carré. La concentration initiale est une tache gaussienne localisée. Les frontières sont imperméables : aucun polluant ne quitte le domaine.
+La première étape résout
 
-Cette étape sert à vérifier :
+    ∂c/∂t = D Δc.
 
-- la stabilité du schéma numérique ;
-- la positivité de la concentration ;
-- la conservation de la masse totale ;
-- la symétrie de la diffusion ;
-- la reproductibilité des résultats.
+Une tache gaussienne représente le polluant initial. Un schéma d’Euler explicite et un laplacien à cinq points simulent son étalement. Le programme contrôle la stabilité, la positivité et la conservation de la masse.
 
-## Méthode numérique
+Exécution :
 
-L’espace est discrétisé par différences finies avec un laplacien à cinq points. Le temps est avancé par un schéma d’Euler explicite. Le pas de temps est choisi automatiquement pour respecter la condition de stabilité
+~~~powershell
+python src\etape_1_diffusion.py
+~~~
 
-    Δt ≤ Δx² / (4D).
+## Étape 2 — Transport par le vent
+
+La deuxième étape résout
+
+    ∂c/∂t + u ∂c/∂x + v ∂c/∂y = D Δc.
+
+Le terme d’advection représente le déplacement causé par le vent. Il est discrétisé par un schéma amont. Trois scénarios sont comparés : sans vent, vent horizontal et vent oblique.
+
+Le programme suit aussi le centre de masse du nuage de pollution afin de mesurer son déplacement.
+
+Exécution :
+
+~~~powershell
+python src\etape_2_transport_vent.py
+~~~
+
+Paramètres personnalisés :
+
+~~~powershell
+python src\etape_2_transport_vent.py --vent-x 3 --vent-y 0.8 --duree 10
+~~~
 
 ## Installation
 
@@ -43,36 +63,20 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ~~~
 
-## Exécution
-
-~~~powershell
-python src\etape_1_diffusion.py
-~~~
-
-Paramètres personnalisés :
-
-~~~powershell
-python src\etape_1_diffusion.py --taille 121 --duree 12 --diffusion 5 --sortie resultats
-~~~
-
-## Résultats produits
-
-Le dossier resultats contiendra :
-
-- diffusion_instants.png : cartes de concentration à plusieurs instants ;
-- conservation_masse.png : évolution de la masse totale ;
-- diffusion.gif : animation temporelle ;
-- bilan.txt : paramètres et indicateurs numériques ;
-- conservation_masse.csv : valeurs utilisées pour le contrôle.
-
-## Structure destinée à GitHub
+## Structure
 
     simulation-pollution-air/
     ├── README.md
     ├── requirements.txt
     ├── docs/
-    │   └── plan_scientifique.md
+    │   ├── plan_scientifique.md
+    │   └── etape_2_transport_vent.md
     └── src/
-        └── etape_1_diffusion.py
+        ├── etape_1_diffusion.py
+        └── etape_2_transport_vent.py
+
+## Résultats prévus
+
+Le dossier resultats contiendra des cartes de concentration, des courbes de contrôle, des fichiers CSV, des bilans numériques et des animations GIF.
 
 Les figures réellement obtenues seront ajoutées après exécution et contrôle des résultats.
