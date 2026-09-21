@@ -10,6 +10,8 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 
 ## Étape 1 — Diffusion
 
+État : code disponible, exécution à réaliser.
+
 - équation de diffusion en deux dimensions ;
 - différences finies ;
 - condition de stabilité ;
@@ -17,6 +19,8 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 - étude du raffinement de la grille.
 
 ## Étape 2 — Transport par le vent
+
+État : code et documentation disponibles, exécution à réaliser.
 
 - ajout du terme d’advection ;
 - comparaison de plusieurs directions et vitesses ;
