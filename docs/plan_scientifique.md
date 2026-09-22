@@ -29,17 +29,23 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 
 ## Étape 3 — Source et zone absorbante
 
+État : code, documentation et tests disponibles.
+
 - émission continue ou temporaire ;
 - terme de disparition ;
 - représentation d’une ceinture végétale ;
 - comparaison avec et sans zone absorbante.
+- suivi du bilan de masse et de l’exposition urbaine cumulée.
 
 ## Étape 4 — Mesures bruitées
+
+État : code, documentation et tests disponibles.
 
 - placement de capteurs ;
 - production de séries temporelles ;
 - ajout d’un bruit de mesure ;
 - filtrage et reconstruction du champ de concentration.
+- comparaison quantitative par RMSE et MAE.
 
 ## Étape 5 — Problème inverse
 
