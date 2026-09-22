@@ -4,17 +4,6 @@ Ce projet construit progressivement un modèle mathématique et des solveurs Pyt
 
 Il relie analyse numérique, équations aux dérivées partielles, programmation scientifique, modélisation et environnement.
 
-## Avancement
-
-| Étape | Sujet | État |
-|---|---|---|
-| 1 | Diffusion bidimensionnelle sans vent | Code disponible |
-| 2 | Transport par le vent | Code disponible |
-| 3 | Source continue et zone absorbante | Code et tests disponibles |
-| 4 | Capteurs, mesures bruitées et reconstruction | Code et tests disponibles |
-| 5 | Reconstruction de la source | À développer |
-| 6 | Optimisation environnementale | À développer |
-
 Les quatre premières étapes disposent maintenant d'une chaîne reproductible, depuis la simulation physique jusqu'à la reconstruction d'un champ à partir de mesures bruitées. Les résultats numériques doivent être interprétés à partir des fichiers produits par une exécution locale.
 
 ## Étape 1 — Diffusion sans vent
