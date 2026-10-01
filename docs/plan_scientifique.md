@@ -10,17 +10,17 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 
 ## Étape 1 — Diffusion
 
-État : code disponible, exécution à réaliser.
+État : code disponible et exécution rapide vérifiée ; convergence à étudier.
 
 - équation de diffusion en deux dimensions ;
 - différences finies ;
 - condition de stabilité ;
 - conservation de la masse ;
-- étude du raffinement de la grille.
+- étude du raffinement de la grille à poursuivre.
 
 ## Étape 2 — Transport par le vent
 
-État : code et documentation disponibles, exécution à réaliser.
+État : code et documentation disponibles, exécution rapide vérifiée.
 
 - ajout du terme d’advection ;
 - comparaison de plusieurs directions et vitesses ;
@@ -34,7 +34,7 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 - émission continue ou temporaire ;
 - terme de disparition ;
 - représentation d’une ceinture végétale ;
-- comparaison avec et sans zone absorbante.
+- comparaison avec et sans zone absorbante ;
 - suivi du bilan de masse et de l’exposition urbaine cumulée.
 
 ## Étape 4 — Mesures bruitées
@@ -44,18 +44,21 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 - placement de capteurs ;
 - production de séries temporelles ;
 - ajout d’un bruit de mesure ;
-- filtrage et reconstruction du champ de concentration.
+- filtrage et reconstruction du champ de concentration ;
 - comparaison quantitative par RMSE et MAE.
 
 ## Étape 5 — Problème inverse
 
-- estimation de la position de la source ;
-- estimation de l’intensité de l’émission ;
-- fonction de coût ;
-- méthode d’optimisation ;
-- analyse de sensibilité.
+État : recherche discrète et estimation linéaire disponibles et exécutées.
+
+- estimation de la position de la source parmi 20 candidats ;
+- estimation de l’intensité de l’émission par moindres carrés ;
+- fonction de coût quadratique ;
+- analyse de sensibilité approfondie à poursuivre.
 
 ## Étape 6 — Optimisation environnementale
+
+État : comparaison de 18 configurations disponible et exécutée, avec coût conventionnel.
 
 - position de la zone absorbante ;
 - largeur et intensité d’absorption ;
@@ -64,10 +67,7 @@ Comment le vent transporte-t-il un polluant depuis une source extérieure vers u
 
 ## Contrôles scientifiques
 
-- stabilité ;
-- convergence ;
-- positivité ;
-- conservation de masse ;
-- reproductibilité ;
-- comparaison avec un cas analytique ou une solution de référence ;
-- limites du modèle.
+Stabilité CFL, positivité, conservation de masse et reproductibilité sont
+contrôlées par le solveur et les tests. Convergence systématique, comparaison
+analytique et validation sur des données réelles restent à approfondir.
+Les méthodes, hypothèses et limites sont décrites dans [completion.md](completion.md).
