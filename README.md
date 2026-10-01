@@ -1,140 +1,71 @@
-# Simulation numérique de la dispersion d’un polluant atmosphérique
+# Simulation numérique de la pollution atmosphérique
 
-Ce projet construit progressivement un modèle mathématique et des solveurs Python pour étudier le transport d’un polluant atmosphérique vers une zone urbaine.
+Ce projet pédagogique étudie le transport d'un polluant vers une ville et la
+réduction de son exposition par une ceinture absorbante. Il relie un modèle
+physique, des mesures simulées, une estimation de source et une comparaison
+coût/efficacité. Les six étapes sont présentes dans ce dépôt.
 
-Il relie analyse numérique, équations aux dérivées partielles, programmation scientifique, modélisation et environnement.
+## Installation et lancement
 
-Les quatre premières étapes disposent maintenant d'une chaîne reproductible, depuis la simulation physique jusqu'à la reconstruction d'un champ à partir de mesures bruitées. Les résultats numériques doivent être interprétés à partir des fichiers produits par une exécution locale.
-
-## Étape 1 — Diffusion sans vent
-
-La première étape résout
-
-    ∂c/∂t = D Δc.
-
-Une tache gaussienne représente le polluant initial. Un schéma d’Euler explicite et un laplacien à cinq points simulent son étalement. Le programme contrôle la stabilité, la positivité et la conservation de la masse.
-
-Exécution :
-
-~~~powershell
-python src\etape_1_diffusion.py
-~~~
-
-## Étape 2 — Transport par le vent
-
-La deuxième étape résout
-
-    ∂c/∂t + u ∂c/∂x + v ∂c/∂y = D Δc.
-
-Le terme d’advection représente le déplacement causé par le vent. Il est discrétisé par un schéma amont. Trois scénarios sont comparés : sans vent, vent horizontal et vent oblique.
-
-Le programme suit aussi le centre de masse du nuage de pollution afin de mesurer son déplacement.
-
-Exécution :
-
-~~~powershell
-python src\etape_2_transport_vent.py
-~~~
-
-Paramètres personnalisés :
-
-~~~powershell
-python src\etape_2_transport_vent.py --vent-x 3 --vent-y 0.8 --duree 10
-~~~
-
-## Étape 3 — Source continue et zone absorbante
-
-La troisième étape ajoute une émission localisée `S` et une disparition locale `k c` :
-
-    ∂c/∂t + u ∂c/∂x + v ∂c/∂y = D Δc + S - k c.
-
-Le programme compare deux expériences utilisant exactement le même maillage, le même pas de temps, le même vent et la même source : une expérience sans barrière et une expérience avec ceinture absorbante. Il mesure notamment la masse absorbée et l'exposition cumulée de la zone urbaine.
-
-Exécution complète :
-
-~~~powershell
-python src\etape_3_source_absorption.py
-~~~
-
-Exécution rapide sans GIF :
-
-~~~powershell
-python src\etape_3_source_absorption.py --taille 61 --duree 6 --sans-animation
-~~~
-
-Paramètres personnalisés :
-
-~~~powershell
-python src\etape_3_source_absorption.py --vent-x 3.5 --absorption 1.8 --duree-emission 6
-~~~
-
-## Étape 4 — Capteurs et reconstruction
-
-La quatrième étape utilise le champ simulé comme référence, le mesure avec un réseau régulier de capteurs et ajoute un bruit gaussien reproductible. Une moyenne mobile filtre les séries temporelles, puis une interpolation par pondération inverse des distances (IDW) reconstruit le champ complet.
-
-Le programme compare les reconstructions issues des mesures brutes et filtrées avec la référence grâce à la RMSE et à la MAE. Il exporte les positions, toutes les séries de mesure, les diagnostics et quatre figures prêtes à analyser.
-
-Exécution complète :
-
-~~~powershell
-python src\etape_4_capteurs_reconstruction.py
-~~~
-
-Exécution rapide :
-
-~~~powershell
-python src\etape_4_capteurs_reconstruction.py --taille 61 --duree 6 --pas-mesure 0.3
-~~~
-
-Paramètres personnalisés :
-
-~~~powershell
-python src\etape_4_capteurs_reconstruction.py --capteurs-x 6 --capteurs-y 5 --bruit 12 --fenetre-filtrage 7 --graine 2026
-~~~
-
-## Installation
-
-Python 3.10 ou une version plus récente est recommandé.
+Python 3.10 ou plus récent :
 
 ~~~powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+python lancer.py
 ~~~
 
-## Structure
+Le lanceur exécute les étapes 3 à 6 et produit les figures, CSV et bilans dans
+resultats/. Aucun service, compte ou jeu de données externe n'est nécessaire.
 
-    simulation-pollution-air/
-    ├── README.md
-    ├── requirements.txt
-    ├── docs/
-    │   ├── plan_scientifique.md
-    │   ├── etape_2_transport_vent.md
-    │   ├── etape_3_source_absorption.md
-    │   └── etape_4_capteurs_reconstruction.md
-    ├── src/
-    │   ├── etape_1_diffusion.py
-    │   ├── etape_2_transport_vent.py
-    │   ├── etape_3_source_absorption.py
-    │   └── etape_4_capteurs_reconstruction.py
-    └── tests/
-        ├── test_etape_3.py
-        └── test_etape_4.py
+## Étapes
 
-## Tests
+1. **Diffusion** : étalement d'une concentration initiale, sans vent.
+2. **Vent** : advection amont et déplacement du nuage.
+3. **Source et absorption** : comparaison avec/sans ceinture, bilan de masse et exposition urbaine cumulée.
+4. **Capteurs** : réseau régulier, bruit reproductible, filtre temporel et reconstruction IDW ; comparaison RMSE/MAE.
+5. **Problème inverse** : recherche parmi 20 positions et estimation de l'intensité par moindres carrés.
+6. **Optimisation** : comparaison de 18 ceintures, score combinant exposition et coût conventionnel.
 
-Après installation des dépendances :
+Chaque étape peut être exécutée seule :
 
 ~~~powershell
+python src/etape_1_diffusion.py
+python src/etape_2_transport_vent.py
+python src/etape_3_source_absorption.py --taille 41 --sans-animation
+python src/etape_4_capteurs_reconstruction.py --taille 41 --duree 24
+python src/etape_5_probleme_inverse.py
+python src/etape_6_optimisation.py
 python -m unittest discover -s tests -v
 ~~~
 
-Le workflow GitHub Actions `.github/workflows/tests.yml` exécute aussi les tests sous Python 3.10, 3.11 et 3.12, puis lance une simulation rapide de l'étape 4 à chaque mise à jour de la branche `main` et pour chaque pull request.
+Utiliser --help pour les options de chaque script. Les étapes 4 à 6 utilisent
+un domaine de 100 km, le vent (3 ; 0,3) km/h et la diffusion 1,5 km²/h. Leur
+configuration simple est détaillée dans [docs/completion.md](docs/completion.md).
+Les étapes 1 à 3 conservent leurs paramètres propres.
 
-## Résultats prévus
+## Résultats et interprétation
 
-Le dossier resultats contiendra des cartes de concentration, des courbes de contrôle, des fichiers CSV, des bilans numériques et des animations GIF.
+- Étape 3 : evolution_avec_ceinture.png, comparaison_finale.png,
+  exposition_urbaine.png, bilan_masse.png, diagnostics.csv, bilan.txt ;
+  source_et_ceinture.gif si l'animation est activée.
+- Étape 4 : quatre figures, positions et séries des capteurs, diagnostics CSV,
+  bilan.json avec les paramètres et erreurs finales.
+- Étape 5 : candidats.csv et bilan.json avec source vraie et estimée.
+- Étape 6 : comparaison_ceintures.csv, cout_efficacite.png, bilan.json.
 
-L'étape 3 produit notamment `comparaison_absorption.png`, `evolution_indicateurs.png`, `diagnostics.csv`, `bilan.txt` et, sauf avec l'option `--sans-animation`, `source_absorption.gif`.
+Les sorties sont régénérées localement par les scripts. Le compte rendu
+et les résultats chiffrés se trouvent dans [docs/verification.md](docs/verification.md).
+Ils concernent uniquement une expérience synthétique. Les frontières sont
+fermées, le vent constant et l'absorption simplifiée. Le coût n'est pas un prix
+économique réel. La recherche est discrète et ne garantit pas un optimum global.
+Une étude de convergence systématique et une validation avec des mesures réelles
+restent nécessaires avant toute application environnementale.
 
-L'étape 4 produit `implantation_capteurs.png`, `series_capteurs.png`, `reconstruction_champ.png`, `erreurs_reconstruction.png`, trois fichiers CSV et un bilan numérique détaillé.
+## Vérification automatique
+
+Les tests contrôlent conservation des flux, bilan de masse, positivité,
+réduction de l'exposition, propriétés de l'IDW, filtrage et estimation linéaire.
+Le workflow .github/workflows/tests.yml les exécute sous Python 3.10, 3.11
+et 3.12 à chaque push et pull request.
